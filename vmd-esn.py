@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Mar 21 14:29:07 2022
-
 @author: Acoustics
 """
 # from vmdpy import VMD
@@ -9,7 +7,7 @@ from VMDnet import VMD
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy
-from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error, r2_score
+from sklearn.metrics import mean_squared_error, r2_score
 import time
 
 class ESN():
@@ -92,13 +90,6 @@ class ESN():
         return rmse_list
 
 
-def moving_average_conv(data, window_size):
-   # 卷积平滑滤波
-   window = np.ones(window_size) / window_size
-   smoothed_data = np.convolve(data, window, mode='same')
-   return smoothed_data
-
-
 if __name__ == "__main__":
     data = np.loadtxt('receiver-1.txt', usecols=1)
     datat = data[3500:3800]
@@ -143,11 +134,9 @@ if __name__ == "__main__":
     plt.legend(loc='upper right', prop=font_legend, markerscale=14, framealpha=0)
     err = np.sqrt(np.mean((datat[0:150] - total_pred[0:150]) ** 2))
     err2 = np.sqrt(np.mean((datat[0:50] - total_pred[0:50]) ** 2))
-    mape = mean_absolute_percentage_error(datat[0:150], total_pred[0:150])
     r2 = r2_score(datat[0:150], total_pred[0:150])
-    mape2 = mean_absolute_percentage_error(datat[0:50], total_pred[0:50])
     r22 = r2_score(datat[0:50], total_pred[0:50])
-    print(err, err2, mape, mape2, r2, r22)
+    print(err, err2, r2, r22)
     plt.xlim(0, 300)
     plt.show()
 
